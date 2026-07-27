@@ -21,11 +21,11 @@ A modern, production-grade Flutter application built with **Clean Architecture**
 
 ### 📱 Screenshots Matrix
 
-| Main List (Dark Mode) | Character Detail (Dark) | Multi-Criteria Filters |
+| Character Detail (Light) | Character Detail (Dark) | Multi-Criteria Filters |
 | :---: | :---: | :---: |
 | <img src="docs/screenshots/list_dark.jpg" width="230" alt="Main List Dark" /> | <img src="docs/screenshots/detail_dark.jpg" width="230" alt="Detail Dark" /> | <img src="docs/screenshots/filter_screen.jpg" width="230" alt="Filters" /> |
 
-| Main List (Light Mode) | Character Detail (Light) | Excel Export & Native Sharing |
+| Main List (Light Mode) | Main List (Dark Mode) | Excel Export & Native Sharing |
 | :---: | :---: | :---: |
 | <img src="docs/screenshots/list_light.jpg" width="230" alt="Main List Light" /> | <img src="docs/screenshots/detail_light.jpg" width="230" alt="Detail Light" /> | <img src="docs/screenshots/excel_share.jpg" width="230" alt="Excel Export & Share" /> |
 
