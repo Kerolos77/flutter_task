@@ -3,6 +3,9 @@ import '../../features/character/data/datasources/character_data_source.dart';
 import '../../features/character/data/datasources/character_remote_data_source_impl.dart';
 import '../../features/character/data/repositories/character_repository_impl.dart';
 import '../../features/character/domain/repositories/character_repository.dart';
+import '../../features/character/domain/usecases/get_characters.dart';
+import '../../features/character/domain/usecases/get_multiple_characters.dart';
+import '../../features/character/domain/usecases/get_single_character.dart';
 import '../../features/character/presentation/cubit/character_cubit.dart';
 import '../network/api_client.dart';
 
@@ -22,8 +25,19 @@ Future<void> initInjection() async {
     () => CharacterRepositoryImpl(dataSource: sl()),
   );
 
-  // 4. Cubits (Factory to create new instances per lifecycle when needed)
+  // 4. Use Cases
+  sl.registerLazySingleton<GetCharactersUseCase>(
+    () => GetCharactersUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<GetSingleCharacterUseCase>(
+    () => GetSingleCharacterUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<GetMultipleCharactersUseCase>(
+    () => GetMultipleCharactersUseCase(repository: sl()),
+  );
+
+  // 5. Cubit
   sl.registerFactory<CharacterCubit>(
-    () => CharacterCubit(repository: sl()),
+    () => CharacterCubit(getCharactersUseCase: sl()),
   );
 }

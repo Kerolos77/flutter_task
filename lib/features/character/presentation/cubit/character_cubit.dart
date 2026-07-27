@@ -2,13 +2,19 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/excel_exporter.dart';
 import '../../domain/repositories/character_repository.dart';
+import '../../domain/usecases/get_characters.dart';
 import 'character_state.dart';
 
 class CharacterCubit extends Cubit<CharacterState> {
+  final GetCharactersUseCase getCharactersUseCase;
   final CharacterRepository repository;
   Timer? _debounceTimer;
 
-  CharacterCubit({required this.repository}) : super(const CharacterState());
+  CharacterCubit({
+    required this.getCharactersUseCase,
+    CharacterRepository? repository,
+  })  : repository = repository ?? getCharactersUseCase.repository,
+        super(const CharacterState());
 
   Future<void> fetchCharacters({
     String? nameQuery,
@@ -52,13 +58,15 @@ class CharacterCubit extends Cubit<CharacterState> {
     );
 
     try {
-      final result = await repository.getCharacters(
-        page: 1,
-        name: queryName,
-        status: queryStatus,
-        species: querySpecies,
-        gender: queryGender,
-        type: queryType,
+      final result = await getCharactersUseCase(
+        GetCharactersParams(
+          page: 1,
+          name: queryName,
+          status: queryStatus,
+          species: querySpecies,
+          gender: queryGender,
+          type: queryType,
+        ),
       );
 
       emit(
@@ -84,9 +92,7 @@ class CharacterCubit extends Cubit<CharacterState> {
   }
 
   Future<void> loadNextPage() async {
-    if (state.isLoadingMore ||
-        !state.hasNextPage ||
-        state.status == CharacterStatus.loading) {
+    if (state.isLoadingMore || !state.hasNextPage || state.status == CharacterStatus.loading) {
       return;
     }
 
@@ -95,30 +101,33 @@ class CharacterCubit extends Cubit<CharacterState> {
     final nextPage = state.page + 1;
 
     try {
-      final result = await repository.getCharacters(
-        page: nextPage,
-        name: state.nameQuery,
-        status: state.statusFilter,
-        species: state.speciesFilter,
-        gender: state.genderFilter,
-        type: state.typeFilter,
+      final result = await getCharactersUseCase(
+        GetCharactersParams(
+          page: nextPage,
+          name: state.nameQuery,
+          status: state.statusFilter,
+          species: state.speciesFilter,
+          gender: state.genderFilter,
+          type: state.typeFilter,
+        ),
       );
 
       final updatedList = List.of(state.characters)..addAll(result.characters);
 
-      emit(
-        state.copyWith(
-          status: CharacterStatus.success,
-          characters: updatedList,
-          page: nextPage,
-          totalCount: result.totalCount,
-          hasNextPage: result.hasNextPage,
-          isLoadingMore: false,
-          clearExportPath: true,
-        ),
-      );
+      emit(state.copyWith(
+        status: CharacterStatus.success,
+        characters: updatedList,
+        page: nextPage,
+        totalCount: result.totalCount,
+        hasNextPage: result.hasNextPage,
+        isLoadingMore: false,
+        clearExportPath: true,
+      ));
     } catch (e) {
-      emit(state.copyWith(isLoadingMore: false, clearExportPath: true));
+      emit(state.copyWith(
+        isLoadingMore: false,
+        clearExportPath: true,
+      ));
     }
   }
 
@@ -145,21 +154,18 @@ class CharacterCubit extends Cubit<CharacterState> {
   }
 
   void clearFilters() {
-    emit(
-      state.copyWith(
-        clearNameQuery: true,
-        clearStatusFilter: true,
-        clearGenderFilter: true,
-        clearSpeciesFilter: true,
-        clearTypeFilter: true,
-        clearExportPath: true,
-      ),
-    );
+    emit(state.copyWith(
+      clearNameQuery: true,
+      clearStatusFilter: true,
+      clearGenderFilter: true,
+      clearSpeciesFilter: true,
+      clearTypeFilter: true,
+      clearExportPath: true,
+    ));
     fetchCharacters(
       nameQuery: '',
       statusFilter: null,
       genderFilter: null,
-
       speciesFilter: null,
       typeFilter: null,
       isExplicitFilterChange: true,
@@ -172,19 +178,17 @@ class CharacterCubit extends Cubit<CharacterState> {
     emit(state.copyWith(isExporting: true, clearExportPath: true));
 
     try {
-      final path = await ExcelExporter.exportCharactersToExcel(
-        state.characters,
-      );
-      emit(state.copyWith(isExporting: false, exportPath: path));
+      final path = await ExcelExporter.exportCharactersToExcel(state.characters);
+      emit(state.copyWith(
+        isExporting: false,
+        exportPath: path,
+      ));
     } catch (e) {
-      emit(
-        state.copyWith(
-          isExporting: false,
-          errorMessage:
-              'Export failed: ${e.toString().replaceAll("Exception: ", "")}',
-          clearExportPath: true,
-        ),
-      );
+      emit(state.copyWith(
+        isExporting: false,
+        errorMessage: 'Export failed: ${e.toString().replaceAll("Exception: ", "")}',
+        clearExportPath: true,
+      ));
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_task/features/character/domain/entities/character_entity.dart';
 import 'package:flutter_task/features/character/domain/repositories/character_repository.dart';
+import 'package:flutter_task/features/character/domain/usecases/get_characters.dart';
 import 'package:flutter_task/features/character/presentation/cubit/character_cubit.dart';
 import 'package:flutter_task/features/character/presentation/cubit/character_state.dart';
 
@@ -83,7 +84,10 @@ void main() {
 
     setUp(() {
       mockRepository = MockCharacterRepository();
-      cubit = CharacterCubit(repository: mockRepository);
+      cubit = CharacterCubit(
+        getCharactersUseCase: GetCharactersUseCase(repository: mockRepository),
+        repository: mockRepository,
+      );
     });
 
     tearDown(() {

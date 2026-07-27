@@ -64,7 +64,8 @@ lib/
         │   └── repositories/          # CharacterRepositoryImpl Implementation
         ├── domain/
         │   ├── entities/              # Pure CharacterEntity
-        │   └── repositories/          # CharacterRepository Interface
+        │   ├── repositories/          # CharacterRepository Interface
+        │   └── usecases/              # Domain UseCases (GetCharacters, GetSingleCharacter, etc.)
         └── presentation/
             ├── cubit/                 # CharacterCubit & CharacterState
             ├── screens/               # CharacterListScreen & CharacterDetailScreen
