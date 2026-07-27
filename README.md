@@ -17,15 +17,17 @@ A modern, production-grade Flutter application built with **Clean Architecture**
 
 ---
 
-## 📸 Screenshots & Video Demo
+## 📸 App Screenshots & Live Demo
 
-> [!NOTE]
-> *Please update the image paths and video link below after uploading your screenshots and demo recording.*
+### 📱 Screenshots Matrix
 
-### 📱 Screenshots
-| Main Character List (Dark) | Character Detail Screen | Filter Bottom Sheet | Excel Export & Sharing |
-| :---: | :---: | :---: | :---: |
-| `![List Screen](docs/screenshots/list_dark.png)` | `![Detail Screen](docs/screenshots/detail.png)` | `![Filters](docs/screenshots/filters.png)` | `![Export Sheet](docs/screenshots/export.png)` |
+| Main List (Dark Mode) | Character Detail (Dark) | Multi-Criteria Filters |
+| :---: | :---: | :---: |
+| <img src="docs/screenshots/list_dark.jpg" width="230" alt="Main List Dark" /> | <img src="docs/screenshots/detail_dark.jpg" width="230" alt="Detail Dark" /> | <img src="docs/screenshots/filter_screen.jpg" width="230" alt="Filters" /> |
+
+| Main List (Light Mode) | Character Detail (Light) | Excel Export & Native Sharing |
+| :---: | :---: | :---: |
+| <img src="docs/screenshots/list_light.jpg" width="230" alt="Main List Light" /> | <img src="docs/screenshots/detail_light.jpg" width="230" alt="Detail Light" /> | <img src="docs/screenshots/excel_share.jpg" width="230" alt="Excel Export & Share" /> |
 
 ---
 
