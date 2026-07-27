@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../cubit/character_state.dart';
 
@@ -22,13 +23,13 @@ class CharacterCountBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Total Characters: ${state.totalCount}',
+            '${AppStrings.totalCharactersLabel}: ${state.totalCount}',
             style: theme.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
           Text(
-            'Showing ${state.characters.length}',
+            '${AppStrings.showingCountLabel} ${state.characters.length}',
             style: theme.textTheme.bodySmall?.copyWith(
               color: AppColors.portalGreen,
               fontWeight: FontWeight.w600,

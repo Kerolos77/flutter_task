@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class ErrorStateWidget extends StatelessWidget {
@@ -35,7 +36,7 @@ class ErrorStateWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Oops! Portal Malfunction',
+              AppStrings.portalMalfunction,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -51,7 +52,7 @@ class ErrorStateWidget extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Try Again'),
+              label: const Text(AppStrings.tryAgain),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.portalGreen,
                 foregroundColor: Colors.white,

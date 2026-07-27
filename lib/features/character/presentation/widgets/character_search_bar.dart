@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class CharacterSearchBar extends StatelessWidget {
@@ -31,7 +32,7 @@ class CharacterSearchBar extends StatelessWidget {
               controller: searchController,
               onChanged: onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search characters...',
+                hintText: AppStrings.searchHint,
                 prefixIcon: const Icon(Icons.search_rounded),
                 suffixIcon: searchController.text.isNotEmpty
                     ? IconButton(

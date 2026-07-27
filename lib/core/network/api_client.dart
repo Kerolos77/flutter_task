@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../constants/api_endpoints.dart';
+import '../constants/app_strings.dart';
 
 class ApiClient {
   late final Dio _dio;
@@ -32,7 +33,7 @@ class ApiClient {
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (e) {
-      throw Exception('Unexpected error occurred: $e');
+      throw Exception('${AppStrings.somethingWentWrong} ($e)');
     }
   }
 
@@ -41,18 +42,18 @@ class ApiClient {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return 'Connection timeout. Please check your internet connection.';
+        return AppStrings.connectionTimeout;
       case DioExceptionType.badResponse:
         if (error.response?.statusCode == 404) {
-          return 'No characters found matching your criteria.';
+          return AppStrings.noCharactersFoundCriteria;
         }
-        return 'Server error (${error.response?.statusCode}). Please try again later.';
+        return '${AppStrings.serverErrorPrefix}${error.response?.statusCode}${AppStrings.serverErrorSuffix}';
       case DioExceptionType.cancel:
-        return 'Request was cancelled.';
+        return AppStrings.requestCancelled;
       case DioExceptionType.connectionError:
-        return 'No internet connection available.';
+        return AppStrings.noInternetConnection;
       default:
-        return 'Something went wrong. Please try again.';
+        return AppStrings.somethingWentWrong;
     }
   }
 }

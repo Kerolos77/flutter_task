@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/constants/app_strings.dart';
 import 'core/di/injection_container.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
@@ -33,7 +34,7 @@ class _RickAndMortyAppState extends State<RickAndMortyApp> {
     return BlocProvider(
       create: (context) => sl<CharacterCubit>(),
       child: MaterialApp(
-        title: 'Rick & Morty Explorer',
+        title: AppStrings.appTitle,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

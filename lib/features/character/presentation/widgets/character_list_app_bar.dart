@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../cubit/character_cubit.dart';
 import '../cubit/character_state.dart';
@@ -41,14 +42,14 @@ class CharacterListAppBar extends StatelessWidget implements PreferredSizeWidget
           ),
           const SizedBox(width: 10),
           Text(
-            'Rick & Morty',
+            AppStrings.appBarTitle,
             style: theme.appBarTheme.titleTextStyle,
           ),
         ],
       ),
       actions: [
         IconButton(
-          tooltip: isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+          tooltip: isDarkMode ? AppStrings.switchToLightMode : AppStrings.switchToDarkMode,
           icon: Icon(
             isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
             color: AppColors.portalGreen,
@@ -58,7 +59,7 @@ class CharacterListAppBar extends StatelessWidget implements PreferredSizeWidget
         BlocBuilder<CharacterCubit, CharacterState>(
           builder: (context, state) {
             return IconButton(
-              tooltip: 'Export to Excel (.xlsx)',
+              tooltip: AppStrings.exportToExcelTooltip,
               icon: state.isExporting
                   ? const SizedBox(
                       width: 20,

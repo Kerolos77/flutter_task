@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/character_entity.dart';
 import '../widgets/character_detail_header.dart';
@@ -36,7 +37,7 @@ class CharacterDetailScreen extends StatelessWidget {
                       Expanded(
                         child: CharacterDetailTile(
                           icon: Icons.fingerprint_rounded,
-                          title: 'Species',
+                          title: AppStrings.speciesLabel,
                           value: character.species,
                         ),
                       ),
@@ -44,7 +45,7 @@ class CharacterDetailScreen extends StatelessWidget {
                       Expanded(
                         child: CharacterDetailTile(
                           icon: Icons.wc_rounded,
-                          title: 'Gender',
+                          title: AppStrings.genderLabel,
                           value: character.gender,
                         ),
                       ),
@@ -58,15 +59,15 @@ class CharacterDetailScreen extends StatelessWidget {
                       Expanded(
                         child: CharacterDetailTile(
                           icon: Icons.movie_outlined,
-                          title: 'Episodes',
-                          value: '${character.episodeUrls.length} Episodes',
+                          title: AppStrings.episodesLabel,
+                          value: '${character.episodeUrls.length} ${AppStrings.episodesLabel}',
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: CharacterDetailTile(
                           icon: Icons.tag_rounded,
-                          title: 'Character ID',
+                          title: AppStrings.characterIdLabel,
                           value: '#${character.id}',
                         ),
                       ),
@@ -77,10 +78,10 @@ class CharacterDetailScreen extends StatelessWidget {
 
                   CharacterDetailTile(
                     icon: Icons.category_rounded,
-                    title: 'Character Type',
+                    title: AppStrings.typeHeader,
                     value: character.type.trim().isNotEmpty
                         ? character.type.trim()
-                        : 'Standard / None',
+                        : AppStrings.standardNoneType,
                   ),
 
                   const SizedBox(height: 20),
@@ -89,7 +90,7 @@ class CharacterDetailScreen extends StatelessWidget {
 
                   // Location Details Section
                   Text(
-                    'Location Details',
+                    AppStrings.locationDetailsHeader,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.portalGreen,
@@ -99,7 +100,7 @@ class CharacterDetailScreen extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   CharacterLocationCard(
-                    title: 'Origin Planet',
+                    title: AppStrings.originPlanetLabel,
                     locationName: character.originName,
                     icon: Icons.public_rounded,
                   ),
@@ -107,7 +108,7 @@ class CharacterDetailScreen extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   CharacterLocationCard(
-                    title: 'Last Known Location',
+                    title: AppStrings.lastKnownLocationLabel,
                     locationName: character.locationName,
                     icon: Icons.location_on_rounded,
                   ),

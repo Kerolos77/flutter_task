@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import '../constants/app_strings.dart';
 import '../../features/character/domain/entities/character_entity.dart';
 
 class ExcelExporter {
@@ -11,21 +12,21 @@ class ExcelExporter {
       
       // Rename default sheet
       final String defaultSheet = excel.getDefaultSheet() ?? 'Sheet1';
-      excel.rename(defaultSheet, 'Rick & Morty Characters');
-      final Sheet sheetObject = excel['Rick & Morty Characters'];
+      excel.rename(defaultSheet, AppStrings.excelSheetTitle);
+      final Sheet sheetObject = excel[AppStrings.excelSheetTitle];
 
       // Headers
       final List<CellValue> headers = [
-        TextCellValue('ID'),
-        TextCellValue('Name'),
-        TextCellValue('Status'),
-        TextCellValue('Species'),
-        TextCellValue('Type'),
-        TextCellValue('Gender'),
-        TextCellValue('Origin'),
-        TextCellValue('Last Known Location'),
-        TextCellValue('Episodes Count'),
-        TextCellValue('Image URL'),
+        TextCellValue(AppStrings.headerId),
+        TextCellValue(AppStrings.headerName),
+        TextCellValue(AppStrings.headerStatus),
+        TextCellValue(AppStrings.headerSpecies),
+        TextCellValue(AppStrings.headerType),
+        TextCellValue(AppStrings.headerGender),
+        TextCellValue(AppStrings.headerOrigin),
+        TextCellValue(AppStrings.headerLastLocation),
+        TextCellValue(AppStrings.headerEpisodesCount),
+        TextCellValue(AppStrings.headerImageUrl),
       ];
 
       sheetObject.appendRow(headers);
@@ -64,14 +65,14 @@ class ExcelExporter {
     }
   }
 
-  static Future<void> openExportedFile(String filePath,int characterCount ) async {
+  static Future<void> openExportedFile(String filePath, int characterCount) async {
     try {
       // Directly trigger native share dialog
       await Share.shareXFiles(
         [XFile(filePath)],
-        subject: 'Rick & Morty Characters Export',
-            text: 'Exported $characterCount characters from Rick & Morty App.',
-          );
+        subject: AppStrings.shareSubject,
+        text: 'Exported $characterCount characters from Rick & Morty App.',
+      );
     } catch (_) {}
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../cubit/character_cubit.dart';
 import '../cubit/character_state.dart';
@@ -101,7 +102,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
           if (state.exportPath != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Excel file created & shared successfully!'),
+                content: Text(AppStrings.excelCreatedSuccess),
                 backgroundColor: AppColors.alive,
                 behavior: SnackBarBehavior.floating,
               ),
@@ -177,7 +178,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
                     ),
                   )
                 : const Icon(Icons.file_download_rounded),
-            label: const Text('Export Excel', style: TextStyle(fontWeight: FontWeight.bold)),
+            label: const Text(AppStrings.exportExcelButton, style: TextStyle(fontWeight: FontWeight.bold)),
           );
         },
       ),
@@ -191,7 +192,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
 
     if (state.status == CharacterStatus.failure && state.characters.isEmpty) {
       return ErrorStateWidget(
-        errorMessage: state.errorMessage ?? 'Failed to load characters.',
+        errorMessage: state.errorMessage ?? AppStrings.failedToLoadCharacters,
         onRetry: () {
           context.read<CharacterCubit>().fetchCharacters();
         },

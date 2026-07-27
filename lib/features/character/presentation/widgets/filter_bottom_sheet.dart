@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class FilterBottomSheet extends StatefulWidget {
@@ -30,8 +31,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   String? _selectedType;
   final TextEditingController _typeController = TextEditingController();
 
-  final List<String> _statusOptions = ['alive', 'dead', 'unknown'];
-  final List<String> _genderOptions = ['female', 'male', 'genderless', 'unknown'];
+  final List<String> _statusOptions = [
+    AppStrings.statusAlive,
+    AppStrings.statusDead,
+    AppStrings.statusUnknown,
+  ];
+  final List<String> _genderOptions = [
+    AppStrings.genderFemale,
+    AppStrings.genderMale,
+    AppStrings.genderGenderless,
+    AppStrings.genderUnknown,
+  ];
   final List<String> _speciesOptions = [
     'human',
     'alien',
@@ -70,8 +80,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     _selectedGender = widget.initialGender;
     _selectedSpecies = widget.initialSpecies;
     _selectedType = widget.initialType;
-    if (_selectedType != null) {
-      _typeController.text = _selectedType!;
+    if (widget.initialType != null) {
+      _typeController.text = widget.initialType!;
     }
   }
 
@@ -84,17 +94,18 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Container(
       padding: EdgeInsets.only(
-        top: 16,
         left: 20,
         right: 20,
-        bottom: 24 + MediaQuery.of(context).viewInsets.bottom,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+        color: theme.brightness == Brightness.dark
+            ? AppColors.darkSurface
+            : AppColors.lightSurface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SingleChildScrollView(
@@ -102,23 +113,25 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Handle & Title
+            // Drag Handle Bar
             Center(
               child: Container(
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                  color: Colors.grey.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             const SizedBox(height: 16),
+
+            // Header Title & Reset Button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Filter Characters',
+                  AppStrings.filterCharacters,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -135,7 +148,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     widget.onClear();
                     Navigator.pop(context);
                   },
-                  child: const Text('Reset All'),
+                  child: const Text(AppStrings.resetAll),
                 ),
               ],
             ),
@@ -143,7 +156,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             const Divider(height: 24),
 
             // Status Filter
-            _buildSectionTitle('Status'),
+            _buildSectionTitle(AppStrings.statusHeader),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -169,7 +182,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             const SizedBox(height: 16),
 
             // Gender Filter
-            _buildSectionTitle('Gender'),
+            _buildSectionTitle(AppStrings.genderHeader),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -195,7 +208,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             const SizedBox(height: 16),
 
             // Species Filter
-            _buildSectionTitle('Species'),
+            _buildSectionTitle(AppStrings.speciesHeader),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -223,7 +236,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             const SizedBox(height: 16),
 
             // Type Filter
-            _buildSectionTitle('Character Type'),
+            _buildSectionTitle(AppStrings.typeHeader),
             const SizedBox(height: 8),
             TextField(
               controller: _typeController,
@@ -233,7 +246,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 });
               },
               decoration: InputDecoration(
-                hintText: 'Enter character type (e.g. Genetic experiment)',
+                hintText: AppStrings.enterTypeHint,
                 prefixIcon: const Icon(Icons.category_outlined),
                 suffixIcon: _typeController.text.isNotEmpty
                     ? IconButton(
@@ -246,31 +259,33 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         },
                       )
                     : null,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             Wrap(
               spacing: 6,
               runSpacing: 6,
-              children: _commonTypeOptions.map((typeOption) {
-                final isSelected = _selectedType?.toLowerCase() == typeOption.toLowerCase();
-                return ChoiceChip(
-                  label: Text(typeOption),
-                  selected: isSelected,
-                  selectedColor: AppColors.portalGreen,
+              children: _commonTypeOptions.map((typeOpt) {
+                final isSelected = _selectedType == typeOpt || _typeController.text.trim() == typeOpt;
+                return ActionChip(
+                  label: Text(typeOpt, style: const TextStyle(fontSize: 11)),
+                  backgroundColor: isSelected
+                      ? AppColors.portalGreen
+                      : (theme.brightness == Brightness.dark
+                          ? AppColors.darkSurfaceVariant
+                          : AppColors.lightSurfaceVariant),
                   labelStyle: TextStyle(
                     color: isSelected ? Colors.white : theme.textTheme.bodyMedium?.color,
-                    fontSize: 11,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
-                  onSelected: (selected) {
+                  onPressed: () {
                     setState(() {
-                      if (selected) {
-                        _selectedType = typeOption;
-                        _typeController.text = typeOption;
-                      } else {
+                      if (isSelected) {
                         _selectedType = null;
                         _typeController.clear();
+                      } else {
+                        _selectedType = typeOpt;
+                        _typeController.text = typeOpt;
                       }
                     });
                   },
@@ -300,7 +315,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   ),
                 ),
                 child: const Text(
-                  'Apply Filters',
+                  AppStrings.applyFiltersButton,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),

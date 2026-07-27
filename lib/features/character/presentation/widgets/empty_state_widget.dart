@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class EmptyStateWidget extends StatelessWidget {
@@ -8,8 +9,8 @@ class EmptyStateWidget extends StatelessWidget {
 
   const EmptyStateWidget({
     super.key,
-    this.title = 'No Characters Found',
-    this.message = 'No characters matched your active search or filter criteria.',
+    this.title = AppStrings.noCharactersFoundTitle,
+    this.message = AppStrings.noCharactersFoundMessage,
     this.onResetFilters,
   });
 
@@ -54,7 +55,7 @@ class EmptyStateWidget extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: onResetFilters,
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Reset All Filters'),
+                label: const Text(AppStrings.resetAllFiltersButton),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.portalGreen,
                   side: const BorderSide(color: AppColors.portalGreen),

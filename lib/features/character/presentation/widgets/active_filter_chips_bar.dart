@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../cubit/character_state.dart';
 
@@ -26,7 +27,7 @@ class ActiveFilterChipsBar extends StatelessWidget {
         children: [
           if (state.statusFilter != null)
             _buildFilterChip(
-              label: 'Status: ${state.statusFilter}',
+              label: '${AppStrings.statusHeader}: ${state.statusFilter}',
               onDeleted: () {
                 onApplyFilters(
                   status: null,
@@ -38,7 +39,7 @@ class ActiveFilterChipsBar extends StatelessWidget {
             ),
           if (state.genderFilter != null)
             _buildFilterChip(
-              label: 'Gender: ${state.genderFilter}',
+              label: '${AppStrings.genderHeader}: ${state.genderFilter}',
               onDeleted: () {
                 onApplyFilters(
                   status: state.statusFilter,
@@ -50,7 +51,7 @@ class ActiveFilterChipsBar extends StatelessWidget {
             ),
           if (state.speciesFilter != null)
             _buildFilterChip(
-              label: 'Species: ${state.speciesFilter}',
+              label: '${AppStrings.speciesHeader}: ${state.speciesFilter}',
               onDeleted: () {
                 onApplyFilters(
                   status: state.statusFilter,
@@ -62,7 +63,7 @@ class ActiveFilterChipsBar extends StatelessWidget {
             ),
           if (state.typeFilter != null)
             _buildFilterChip(
-              label: 'Type: ${state.typeFilter}',
+              label: '${AppStrings.headerType}: ${state.typeFilter}',
               onDeleted: () {
                 onApplyFilters(
                   status: state.statusFilter,
@@ -74,7 +75,7 @@ class ActiveFilterChipsBar extends StatelessWidget {
             ),
           TextButton(
             onPressed: onClearAll,
-            child: const Text('Clear All', style: TextStyle(fontSize: 12)),
+            child: const Text(AppStrings.clearAll, style: TextStyle(fontSize: 12)),
           )
         ],
       ),
