@@ -1,0 +1,140 @@
+info:
+  name: Get a single character
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{base_url}}/character/2"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: example
+    request:
+      url: "{{base_url}}/character/2"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: date
+          value: Sat, 25 Jul 2026 22:15:01 GMT
+        - name: content-type
+          value: application/json; charset=utf-8
+        - name: transfer-encoding
+          value: chunked
+        - name: connection
+          value: keep-alive
+        - name: server
+          value: cloudflare
+        - name: x-xss-protection
+          value: 1; mode=block
+        - name: nel
+          value: '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+        - name: access-control-allow-origin
+          value: "*"
+        - name: etag
+          value: W/"a6e-zQHAPIKFfD+Wv+P+4aCju24Mapw"
+        - name: x-proxy-cache
+          value: MISS
+        - name: cache-control
+          value: public, max-age=7776000, immutable
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: age
+          value: "4895149"
+        - name: cf-cache-status
+          value: HIT
+        - name: report-to
+          value: '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=9pupKS5RuuQ5lmojYMfhwCVXdUdBPbajztcfSKNsH2cEK0wLTUkHNrsXax4D6AROE9n17iBlE7k8uTgiHa5LcvypZfVWs4h2pBfHDv7LJEdx2rYO7EET6uffUjN24n%2BSGMxpGGmP"}]}'
+        - name: expect-ct
+          value: max-age=86400, enforce
+        - name: referrer-policy
+          value: same-origin
+        - name: x-content-type-options
+          value: nosniff
+        - name: cf-ray
+          value: a20e855d0a52e181-MRS
+        - name: alt-svc
+          value: h3=":443"; ma=86400
+      body:
+        type: json
+        data: |-
+          {
+            "id": 2,
+            "name": "Morty Smith",
+            "status": "Alive",
+            "species": "Human",
+            "type": "",
+            "gender": "Male",
+            "origin": {
+              "name": "unknown",
+              "url": ""
+            },
+            "location": {
+              "name": "Citadel of Ricks",
+              "url": "https://rickandmortyapi.com/api/location/3"
+            },
+            "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+            "episode": [
+              "https://rickandmortyapi.com/api/episode/1",
+              "https://rickandmortyapi.com/api/episode/2",
+              "https://rickandmortyapi.com/api/episode/3",
+              "https://rickandmortyapi.com/api/episode/4",
+              "https://rickandmortyapi.com/api/episode/5",
+              "https://rickandmortyapi.com/api/episode/6",
+              "https://rickandmortyapi.com/api/episode/7",
+              "https://rickandmortyapi.com/api/episode/8",
+              "https://rickandmortyapi.com/api/episode/9",
+              "https://rickandmortyapi.com/api/episode/10",
+              "https://rickandmortyapi.com/api/episode/11",
+              "https://rickandmortyapi.com/api/episode/12",
+              "https://rickandmortyapi.com/api/episode/13",
+              "https://rickandmortyapi.com/api/episode/14",
+              "https://rickandmortyapi.com/api/episode/15",
+              "https://rickandmortyapi.com/api/episode/16",
+              "https://rickandmortyapi.com/api/episode/17",
+              "https://rickandmortyapi.com/api/episode/18",
+              "https://rickandmortyapi.com/api/episode/19",
+              "https://rickandmortyapi.com/api/episode/20",
+              "https://rickandmortyapi.com/api/episode/21",
+              "https://rickandmortyapi.com/api/episode/22",
+              "https://rickandmortyapi.com/api/episode/23",
+              "https://rickandmortyapi.com/api/episode/24",
+              "https://rickandmortyapi.com/api/episode/25",
+              "https://rickandmortyapi.com/api/episode/26",
+              "https://rickandmortyapi.com/api/episode/27",
+              "https://rickandmortyapi.com/api/episode/28",
+              "https://rickandmortyapi.com/api/episode/29",
+              "https://rickandmortyapi.com/api/episode/30",
+              "https://rickandmortyapi.com/api/episode/31",
+              "https://rickandmortyapi.com/api/episode/32",
+              "https://rickandmortyapi.com/api/episode/33",
+              "https://rickandmortyapi.com/api/episode/34",
+              "https://rickandmortyapi.com/api/episode/35",
+              "https://rickandmortyapi.com/api/episode/36",
+              "https://rickandmortyapi.com/api/episode/37",
+              "https://rickandmortyapi.com/api/episode/38",
+              "https://rickandmortyapi.com/api/episode/39",
+              "https://rickandmortyapi.com/api/episode/40",
+              "https://rickandmortyapi.com/api/episode/41",
+              "https://rickandmortyapi.com/api/episode/42",
+              "https://rickandmortyapi.com/api/episode/43",
+              "https://rickandmortyapi.com/api/episode/44",
+              "https://rickandmortyapi.com/api/episode/45",
+              "https://rickandmortyapi.com/api/episode/46",
+              "https://rickandmortyapi.com/api/episode/47",
+              "https://rickandmortyapi.com/api/episode/48",
+              "https://rickandmortyapi.com/api/episode/49",
+              "https://rickandmortyapi.com/api/episode/50",
+              "https://rickandmortyapi.com/api/episode/51"
+            ],
+            "url": "https://rickandmortyapi.com/api/character/2",
+            "created": "2017-11-04T18:50:21.651Z"
+          }
