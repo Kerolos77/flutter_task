@@ -1,148 +1,141 @@
 # 🧪 Rick & Morty Explorer - Flutter Application
 
-![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
-![Dart](https://img.shields.io/badge/dart-%2300B4AB.svg?style=for-the-badge&logo=dart&logoColor=white)
-![BLoC/Cubit](https://img.shields.io/badge/Bloc%2FCubit-8A2BE2?style=for-the-badge)
-![Clean Architecture](https://img.shields.io/badge/Clean%20Architecture-00599E?style=for-the-badge)
-
-A modern, high-performance Flutter application built for the **EASY WORLD DIGITAL MARKETING** Flutter Internship selection task. The app integrates with the [Rick & Morty REST API](https://rickandmortyapi.com/documentation) to explore characters, perform real-time debounced searches, apply advanced multi-criteria filters, view detailed character profiles, and **export character datasets directly to Excel (.xlsx)** files with native sharing.
+A modern, production-grade Flutter application built with **Clean Architecture**, **BLoC/Cubit State Management**, **Dependency Injection (GetIt)**, **Centralized AppRouter**, and **Dio Networking** to explore characters from the official Rick & Morty REST API.
 
 ---
 
-## 🌟 Key Features
+## 📱 Project Overview & Key Features
 
-- **🛸 Fetch & Infinite Scroll Pagination**: Automatically loads character lists with smooth infinite scroll pagination (`loadNextPage`).
-- **🔍 Real-Time Search**: Search characters by name with a 500ms debounce timer to optimize network calls.
-- **🎛️ Advanced Multi-Filter**: Filter characters by:
-  - **Status**: Alive, Dead, Unknown
-  - **Gender**: Female, Male, Genderless, Unknown
-  - **Species**: Human, Alien, Humanoid, Robot, etc.
-- **📊 Excel (.xlsx) Data Export**: One-tap export of character lists into structured, auto-formatted `.xlsx` spreadsheets complete with native share/save dialogs (`share_plus`).
-- **🎨 Modern Portal UI/UX**:
-  - Dark Mode & Light Mode switcher.
-  - Rick & Morty Portal Green (`#00B5CC`) & Cyber Neon (`#97CE4C`) accents.
-  - Hero image animations between list and detail view.
-  - Glowing status badges (Green for Alive, Red for Dead, Gray for Unknown).
-- **🛡️ Robust State Handling**:
-  - **Loading State**: Shimmer skeleton loading effect (`shimmer`).
-  - **Empty State**: Custom vector artwork for zero results with "Reset All Filters" action.
-  - **Error State**: Friendly malfunction error screen with "Try Again" retry action.
-
----
-
-## 🏗️ Architecture & Project Structure
-
-The project strictly follows **Clean Architecture** combined with **Feature-First / Layered Structure** for clean separation of concerns and maintainability.
-
-```
-lib/
-├── core/
-│   ├── network/
-│   │   └── api_client.dart            # Dio HTTP Client wrapper with error mapping
-│   ├── theme/
-│   │   ├── app_colors.dart            # Brand & theme color palette
-│   │   └── app_theme.dart             # Dark and Light ThemeData
-│   └── utils/
-│       └── excel_exporter.dart        # Helper to generate & share Excel (.xlsx) files
-├── features/
-│   └── character/
-│       ├── data/
-│       │   ├── datasources/
-│       │   │   └── character_remote_data_source.dart
-│       │   ├── models/
-│       │   │   ├── character_model.dart
-│       │   │   └── character_response_model.dart
-│       │   └── repositories/
-│       │       └── character_repository_impl.dart
-│       ├── domain/
-│       │   ├── entities/
-│       │   │   └── character_entity.dart
-│       │   └── repositories/
-│       │       └── character_repository.dart
-│       └── presentation/
-│           ├── cubit/
-│           │   ├── character_cubit.dart
-│           │   └── character_state.dart
-│           ├── screens/
-│           │   ├── character_list_screen.dart
-│           │   └── character_detail_screen.dart
-│           └── widgets/
-│               ├── character_card.dart
-│               ├── filter_bottom_sheet.dart
-│               ├── shimmer_loading.dart
-│               ├── empty_state_widget.dart
-│               └── error_state_widget.dart
-└── main.dart                           # Entrypoint & Dependency Injection
-```
-
----
-
-## 🛠️ State Management: Cubit (Flutter Bloc)
-
-We chose **Cubit** (`flutter_bloc`) due to its lightweight nature, predictable state management, and seamless integration with Clean Architecture:
-- `CharacterState` holds the state for character lists, current page index, total count, active filter queries, and Excel export status.
-- `CharacterCubit` encapsulates business logic for fetching, paginating, searching, filtering, and exporting.
-
----
-
-## 📦 Packages & Dependencies Used
-
-| Package | Purpose |
-| :--- | :--- |
-| `flutter_bloc` | State management (Cubit) |
-| `equatable` | Value equality comparison |
-| `dio` | HTTP networking & API integration |
-| `excel` | Creating & formatting Excel (.xlsx) spreadsheets |
-| `share_plus` | Triggering native device share dialogs for exported files |
-| `path_provider` | Locating temporary directory paths |
-| `cached_network_image` | Image caching and memory optimization |
-| `shimmer` | Skeleton loading effects |
-| `google_fonts` | Typography |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Flutter SDK (v3.19.0 or higher)
-- Dart SDK (v3.3.0 or higher)
-
-### Installation
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/your-username/flutter_rick_and_morty.git
-   cd flutter_rick_and_morty
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   flutter pub get
-   ```
-
-3. **Run the Application**:
-   ```bash
-   flutter run
-   ```
-
-4. **Run Unit Tests**:
-   ```bash
-   flutter test
-   ```
+- **⚡ Infinite Scroll Pagination**: Smoothly loads pages of characters on demand as the user scrolls.
+- **🔍 Real-time Search with Debounce**: Fast character search by name with 500ms input debouncing.
+- **🎛️ Multi-Criteria Filters**: Filter characters by `Status` (Alive, Dead, Unknown), `Gender`, `Species`, and custom `Type`.
+- **🏷️ Interactive Filter Chips**: View active filter chips with quick `(X)` removal for single filters or "Clear All".
+- **📊 Dynamic Excel Export & Sharing**: Export loaded characters directly to an `.xlsx` Excel sheet and launch the native OS Share flyout / default spreadsheet viewer.
+- **🌗 Dark & Light Cyber Themes**: Custom sci-fi cyber theme with instant theme switching using Google Fonts (`Poppins`).
+- **🚀 Native Splash Screen**: Customized native splash screen featuring a rounded glowing portal app logo.
+- **🧪 Unit & Widget Testing**: Comprehensive unit tests for state management, pagination, filtering, and model JSON parsing.
 
 ---
 
 ## 📸 Screenshots & Video Demo
 
 > [!NOTE]
-> - **Screenshots**: Place screenshots inside a `screenshots/` directory or embed links here.
-> - **Video Demo**: [Link to Application Video Demo](https://youtube.com/...)
+> *Please update the image paths and video link below after uploading your screenshots and demo recording.*
+
+### 📱 Screenshots
+| Main Character List (Dark) | Character Detail Screen | Filter Bottom Sheet | Excel Export & Sharing |
+| :---: | :---: | :---: | :---: |
+| `![List Screen](docs/screenshots/list_dark.png)` | `![Detail Screen](docs/screenshots/detail.png)` | `![Filters](docs/screenshots/filters.png)` | `![Export Sheet](docs/screenshots/export.png)` |
 
 ---
 
-## 📄 Submission Information
+### 🎥 App Demonstration Video
+- **Video Link**: [Watch Video Demo Here](https://your-loom-or-youtube-or-drive-link-here)
 
-- **Task**: EASY WORLD ESTABLISHMENT Digital Marketing - Flutter Internship Task
-- **Deadline**: Wednesday, 29/07/2026 – 6:00 PM
-- **Form Submission**: [Google Forms Submission Link](https://forms.gle/HCpbTp7ps8Gs5jE86)
-- **Contact**: info@1ez.app | WhatsApp: +201019285422
+---
+
+## 🏗️ Architecture & Folder Structure
+
+Built using **Clean Architecture** principles separated into distinct layers:
+
+```
+lib/
+├── core/
+│   ├── constants/
+│   │   └── api_endpoints.dart         # Centralized API URLs & Endpoints
+│   ├── di/
+│   │   └── injection_container.dart   # GetIt Dependency Injection Container
+│   ├── network/
+│   │   └── api_client.dart            # Dio Client with Error Interception
+│   ├── routing/
+│   │   ├── app_router.dart            # Centralized onGenerateRoute Navigation
+│   │   └── routes.dart                # Named Route String Constants
+│   ├── theme/
+│   │   ├── app_colors.dart            # Palette Tokens (Portal Green, Cyber Neon)
+│   │   └── app_theme.dart             # Dark & Light ThemeData
+│   └── utils/
+│       └── excel_exporter.dart        # Excel (.xlsx) Generator & Platform Share
+│
+└── features/
+    └── character/
+        ├── data/
+        │   ├── datasources/           # CharacterRemoteDataSource Implementation
+        │   ├── models/                # CharacterModel & CharacterResponseModel
+        │   └── repositories/          # CharacterRepositoryImpl Implementation
+        ├── domain/
+        │   ├── entities/              # Pure CharacterEntity
+        │   └── repositories/          # CharacterRepository Interface
+        └── presentation/
+            ├── cubit/                 # CharacterCubit & CharacterState
+            ├── screens/               # CharacterListScreen & CharacterDetailScreen
+            └── widgets/               # CharacterCard, FilterBottomSheet, Shimmer, etc.
+```
+
+---
+
+## 🛠️ Technology Stack & Dependencies
+
+| Library / Package | Purpose |
+| :--- | :--- |
+| **`flutter_bloc`** | State management using Cubit pattern |
+| **`get_it`** | Service locator for Dependency Injection |
+| **`dio`** | Powerful HTTP client with timeout & error handling |
+| **`equatable`** | Value equality comparison for BLoC states |
+| **`excel`** | Generation of `.xlsx` spreadsheets |
+| **`share_plus`** | Native mobile & desktop file sharing flyout |
+| **`flutter_native_splash`** | Native app launcher splash screen |
+| **`cached_network_image`** | Network image caching with fallback loading |
+| **`google_fonts`** | Typography integration (`Poppins`) |
+| **`shimmer`** | Futuristic loading placeholder effects |
+
+---
+
+## ⚙️ Getting Started & Installation
+
+### Prerequisites
+- **Flutter SDK**: `>=3.19.0`
+- **Dart SDK**: `>=3.3.0`
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
+cd flutter_task
+```
+
+### 2️⃣ Install Dependencies
+```bash
+flutter pub get
+```
+
+### 3️⃣ Run Unit & Widget Tests
+```bash
+flutter test
+```
+
+### 4️⃣ Run static code analysis
+```bash
+flutter analyze
+```
+
+### 5️⃣ Run the Application
+```bash
+flutter run
+```
+
+---
+
+## 🧪 Testing
+
+The codebase includes thorough automated tests located in the `test/` directory:
+- `test/character_cubit_test.dart`: Validates pagination, filter resetting, explicit filter removal, and export state resetting.
+- `test/widget_test.dart`: Validates JSON parsing for all 4 Bruno collection API endpoints.
+
+To run tests:
+```bash
+flutter test
+```
+
+---
+
+## 📄 License
+This project is open-source under the MIT License.
