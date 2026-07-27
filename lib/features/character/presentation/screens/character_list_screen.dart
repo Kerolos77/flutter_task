@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../cubit/character_cubit.dart';
 import '../cubit/character_state.dart';
+import '../widgets/active_filter_chips_bar.dart';
 import '../widgets/character_card.dart';
+import '../widgets/character_count_bar.dart';
+import '../widgets/character_list_app_bar.dart';
+import '../widgets/character_search_bar.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/error_state_widget.dart';
 import '../widgets/filter_bottom_sheet.dart';
@@ -78,71 +82,10 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/images/app_logo.png',
-                width: 30,
-                height: 30,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const Icon(
-                  Icons.auto_awesome,
-                  color: AppColors.neonCyber,
-                  size: 24,
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'Rick & Morty',
-              style: theme.appBarTheme.titleTextStyle,
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            tooltip: widget.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
-            icon: Icon(
-              widget.isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-              color: AppColors.portalGreen,
-            ),
-            onPressed: widget.onToggleTheme,
-          ),
-          BlocBuilder<CharacterCubit, CharacterState>(
-            builder: (context, state) {
-              return IconButton(
-                tooltip: 'Export to Excel (.xlsx)',
-                icon: state.isExporting
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: AppColors.portalGreen,
-                        ),
-                      )
-                    : const Icon(
-                        Icons.explicit_outlined,
-                        color: AppColors.portalGreen,
-                        size: 26,
-                      ),
-                onPressed: state.isExporting
-                    ? null
-                    : () {
-                        context.read<CharacterCubit>().exportToExcel();
-                      },
-              );
-            },
-          ),
-          const SizedBox(width: 8),
-        ],
+      appBar: CharacterListAppBar(
+        isDarkMode: widget.isDarkMode,
+        onToggleTheme: widget.onToggleTheme,
       ),
       body: BlocConsumer<CharacterCubit, CharacterState>(
         listener: (context, state) {
@@ -169,177 +112,38 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
         builder: (context, state) {
           return Column(
             children: [
-              // Search & Filter Header
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                child: Row(
-                  children: [
-                    // Search Input Field
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        onChanged: (val) {
-                          context.read<CharacterCubit>().onSearchChanged(val);
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Search characters...',
-                          prefixIcon: const Icon(Icons.search_rounded),
-                          suffixIcon: _searchController.text.isNotEmpty
-                              ? IconButton(
-                                  icon: const Icon(Icons.clear_rounded, size: 20),
-                                  onPressed: () {
-                                    _searchController.clear();
-                                    context.read<CharacterCubit>().onSearchChanged('');
-                                  },
-                                )
-                              : null,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-
-                    // Filter Button
-                    Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: state.hasActiveFilters
-                                ? AppColors.portalGreen
-                                : theme.cardTheme.color,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: state.hasActiveFilters
-                                  ? AppColors.portalGreen
-                                  : (widget.isDarkMode
-                                      ? AppColors.borderDark
-                                      : AppColors.borderLight),
-                            ),
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.filter_list_rounded,
-                              color: state.hasActiveFilters
-                                  ? Colors.white
-                                  : AppColors.portalGreen,
-                            ),
-                            onPressed: () => _openFilterBottomSheet(state),
-                          ),
-                        ),
-                        if (state.hasActiveFilters)
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Container(
-                              width: 8,
-                              height: 8,
-                              decoration: const BoxDecoration(
-                                color: AppColors.neonCyber,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+              // Search Bar & Filter Action Button
+              CharacterSearchBar(
+                searchController: _searchController,
+                onSearchChanged: (val) {
+                  context.read<CharacterCubit>().onSearchChanged(val);
+                },
+                onOpenFilter: () => _openFilterBottomSheet(state),
+                hasActiveFilters: state.hasActiveFilters,
+                isDarkMode: widget.isDarkMode,
               ),
 
-              // Active Filters Indicators
-              if (state.hasActiveFilters)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                  height: 42,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      if (state.statusFilter != null)
-                        _buildFilterChip(
-                          label: 'Status: ${state.statusFilter}',
-                          onDeleted: () {
-                            context.read<CharacterCubit>().applyFilters(
-                                  status: null,
-                                  gender: state.genderFilter,
-                                  species: state.speciesFilter,
-                                  type: state.typeFilter,
-                                );
-                          },
-                        ),
-                      if (state.genderFilter != null)
-                        _buildFilterChip(
-                          label: 'Gender: ${state.genderFilter}',
-                          onDeleted: () {
-                            context.read<CharacterCubit>().applyFilters(
-                                  status: state.statusFilter,
-                                  gender: null,
-                                  species: state.speciesFilter,
-                                  type: state.typeFilter,
-                                );
-                          },
-                        ),
-                      if (state.speciesFilter != null)
-                        _buildFilterChip(
-                          label: 'Species: ${state.speciesFilter}',
-                          onDeleted: () {
-                            context.read<CharacterCubit>().applyFilters(
-                                  status: state.statusFilter,
-                                  gender: state.genderFilter,
-                                  species: null,
-                                  type: state.typeFilter,
-                                );
-                          },
-                        ),
-                      if (state.typeFilter != null)
-                        _buildFilterChip(
-                          label: 'Type: ${state.typeFilter}',
-                          onDeleted: () {
-                            context.read<CharacterCubit>().applyFilters(
-                                  status: state.statusFilter,
-                                  gender: state.genderFilter,
-                                  species: state.speciesFilter,
-                                  type: null,
-                                );
-                          },
-                        ),
-                      TextButton(
-                        onPressed: () {
-                          _searchController.clear();
-                          context.read<CharacterCubit>().clearFilters();
-                        },
-                        child: const Text('Clear All', style: TextStyle(fontSize: 12)),
-                      )
-                    ],
-                  ),
-                ),
+              // Active Filters Chips Bar
+              ActiveFilterChipsBar(
+                state: state,
+                onClearAll: () {
+                  _searchController.clear();
+                  context.read<CharacterCubit>().clearFilters();
+                },
+                onApplyFilters: ({status, gender, species, type}) {
+                  context.read<CharacterCubit>().applyFilters(
+                        status: status,
+                        gender: gender,
+                        species: species,
+                        type: type,
+                      );
+                },
+              ),
 
-              // Character Count Bar
-              if (state.status == CharacterStatus.success)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total Characters: ${state.totalCount}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        'Showing ${state.characters.length}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.portalGreen,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              // Character Count Indicator Bar
+              CharacterCountBar(state: state),
 
-              // Main Body Content
+              // Main Characters List Body
               Expanded(
                 child: RefreshIndicator(
                   color: AppColors.portalGreen,
@@ -427,23 +231,6 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
         final character = state.characters[index];
         return CharacterCard(character: character);
       },
-    );
-  }
-
-  Widget _buildFilterChip({
-    required String label,
-    required VoidCallback onDeleted,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 6),
-      child: Chip(
-        label: Text(label, style: const TextStyle(fontSize: 11)),
-        deleteIcon: const Icon(Icons.close_rounded, size: 14),
-        onDeleted: onDeleted,
-        backgroundColor: AppColors.portalGreen.withValues(alpha: 0.15),
-        side: const BorderSide(color: AppColors.portalGreen, width: 0.8),
-        padding: const EdgeInsets.symmetric(horizontal: 4),
-      ),
     );
   }
 }
